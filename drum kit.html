@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<style>
+    html {
+        font-size: 10px;
+        background: url(http://i.imgur.com/b9r5sEL.jpg) bottom center;
+        background-size: cover;
+    }
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+    }
+    .keys {
+        display: flex;
+        flex: 1;
+        min-height: 100vh;
+        align-items: center;
+        justify-content: center;
+    }
+    .key {
+        border: .4rem solid black;
+        border-radius: .5rem ;
+        margin: 1 rem;
+        font-size: 1.5rem;
+        padding: 1rem .5rem;
+        transition: all .07s ease;
+        width: 10rem;
+        text-align: center;
+        color: white;
+        background: rgba(red, green, blue, 0.4);
+        text-shadow: 0 0 .5rem black;
+    }
+    .playing {
+        transform: scale(1.1);
+        border-color: #ffc600;
+        box-shadow: 0 0 1rem #ffc600;
+    }
+    kbd {
+        display: block;
+        font-size: 4rem;
+    }
+    .sound {
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: .1rem;
+        color: #ffc600;
+    }
+</style>
+</head>
+<div class="key" press-key="81">
+    <span>Q</span>
+</div>
+<div class="key" press-key="87">
+    <span>W</span>
+</div>
+<div class="key" press-key="69">
+    <span>E</span>
+</div>
+<div class="key" press-key="82">
+    <span>R</span>
+</div>
+<div class="key" press-key="84">
+    <span>T</span>
+</div>
+<div class="key" press-key="89">
+    <span>Y</span>
+</div>
+<div class="key" press-key="85">
+    <span>U</span>
+</div>
+<div class="key" press-key="73">
+    <span>I</span>
+</div>
+<div class="key" press-key="79">
+    <span>O</span>
+</div>
+<div class="key" press-key="80">
+    <span>P</span>
+</div>
+
+<audio keys="81" src="./sounds/boom.wav"></audio>
+<audio keys="87" src="./sounds/clap.wav"></audio>
+<audio keys="69" src="./sounds/hihat.wav"></audio>
+<audio keys="84" src="./sounds/openhat.wav"></audio>
+<audio keys="89" src="./sounds/ride.wav"></audio>
+<audio keys="85" src="./sounds/snare.wav"></audio>
+<audio keys="73" src="./sounds/tink.wav"></audio>
+<audio keys="79" src="./sounds/tom.wav"></audio>
+<audio keys="80" src="./sounds/boom.wav"></audio>
+
+<script>
+    console.log()
+    const keys = document.querySelectorAll('.key');
+    keys.forEach(key => key.addEventListener('transitionend',removeTransition));
+    window.addEventListener('keydown',palyPressEvent);
+
+    palyPressEvent = (e)=>{
+        const audio = document.querySelector(`audio[keys='${e.keyCode}']`);
+        const key = document.querySelector(`div[press-key='${e.keyCode}']`);
+        console.log(key);
+
+    }
+
+    audio.currentTime = 0;
+    audio.play();
+    hey.classList.add('playing');
+</script>
+</html>
