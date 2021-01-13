@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Whack a Mole!</title>
+    <style>
+    	html {
+    		font-size: 35px;
+    		background: #98BCF4;
+		}
+		body {
+    		padding: 0;
+    		margin: 0;
+    		text-align: center;
+		}
+		h1 {
+			text-align: center;
+    		font-size: 100px;
+    		line-height: 1;
+    		margin-bottom: 0;
+		}
+		.score {
+    		background:blue;
+    		padding: 0 48px;
+    		line-height: 1;
+    		border-radius: 16px;
+    		color: #fff;
+    		margin-left: 15px;
+		}
+		button{
+    		width:175px;
+    		font-size: 35px;
+    		height: 70px;
+    		color: #fff;
+    		background-color: blue;
+    		border-radius: 10px;
+    		margin-left: 20px;
+    		margin-top: 90px;
+		}
+		.game {
+    		width: 600px;
+    		height: 200px;
+    		display:flex;
+    		flex-wrap:wrap;
+		    margin: 0 auto;
+		}
+		.hole{
+    		flex: 1 0 33.33%;
+    		overflow: hidden;
+    		position: relative;
+		}
+		.hole:after{
+    		content: '';
+    		display:block;
+    		background: url(dirt.png) bottom center no-repeat;
+    		background-size:contain;
+    		width: 100%;
+    		height: 90px;
+    		position: absolute;
+    		z-index: 2;
+    		bottom: -30px;
+		}
+		.mole {
+/*		    background: url('mole.png') bottom center no-repeat;*/
+		    background: bottom center no-repeat;
+    		background-size: 80%;
+    		position: absolute;
+    		top: 100%;
+    		width: 100%;
+    		height: 100%;
+    		transition: all 0.4s;
+		}
+		.mole2 {
+		    background: url('mole1.png') bottom center no-repeat;
+    		background-size: 80%;
+    		position: absolute;
+    		top: 100%;
+    		width: 100%;
+    		height: 100%;
+    		transition: all 0.4s;
+		}
+		.mole3 {
+		    background:  bottom center no-repeat;
+    		background-size: 80%;
+    		position: absolute;
+    		top: 100%;
+    		width: 100%;
+    		height: 100%;
+    		transition: all 0.4s;
+		}
+		.hole.up .mole{
+		    top:0;
+		}
+		.hole.up .mole2{
+		    top:0;
+		}
+		.hole.up .mole3{
+		    top:0;
+		}
+
+		.text {
+			font-size: 90px;
+			font-weight: bold;
+		}
+    </style>
+</head>
+
+<body>
+	<h3>Hi!</h3>
+    <h1>Whack-a-mole!</h1>
+    <span class="score">0</span>
+    <button onClick="startGame()">Start!</button>
+
+    <div class="game">
+        <div class="hole hole1">
+        	<div class="mole text"></div>
+        </div>
+        <div class="hole hole2">
+        	<div class="mole text"></div>
+        </div>
+    </div>
+    
+    <div class="voice">
+	<audio data-key="bole" src="bole.mp3" type="audio/mpeg" controls></audio>
+	<audio data-key="mole" src="mole.mp3" type="audio/mpeg" controls></audio>
+	<audio data-key="vole" src="vole.mp3" type="audio/mpeg" controls></audio>
+	<audio data-key="dole" src="dole.mp3" type="audio/mpeg" controls></audio>
+	<audio data-key="pole" src="pole.mp3" type="audio/mpeg" controls></audio>
+	<audio data-key="sole" src="sole.mp3" type="audio/mpeg" controls></audio>
+	<audio data-key="hole" src="hole.mp3" type="audio/mpeg" controls></audio>
+	<audio data-key="role" src="role.mp3" type="audio/mpeg" controls></audio>
+    </div>
+    
+    <script>
+    	const words= ['bole','mole','vole','dole','pole','sole','hole','role'];
+    	const holes = document.querySelectorAll('.hole');
+		const scoreBoard = document.querySelector('.score');
+		const moles = document.querySelectorAll('.mole');
+		//console.log(scoreBoard);
+		console.log(moles);
+		console.log(holes);
+
+		let targetHole=0;
+		let targetWord='';
+		let timeUp = false;
+		let score = 0;
+//		let audios=document.getElementsByTagName('audio');
+//		let audio = audios[0];
+//		console.log(audio);
+		function startGame() {
+    		scoreBoard.textContent = 0;
+    		timeUp = false;
+    		score = 0;
+ 			targetWord = randomWord(words);//peep hole 
+ 			console.log(targetWord);
+ 			audio = document.querySelector(
+ 				`audio[data-key="${targetWord}"]`
+ 			);
+ 			console.log(audio);
+ 			audio.play();
+    		run();
+			//console.log('timeUp:',timeUp);
+    		setTimeout(() => {
+    			timeUp = true;
+				console.log('timeUp:',timeUp);
+    			}, 15000);	//play for 15 seconds
+		}
+
+		function run() {
+			const promiseA = new Promise((resolve, reject)=>{
+				resolve('mole3');
+			});
+
+    		const time = 1000;
+//    		const time = randomTime(700, 2000);//peeped time
+//			console.log('time:',time);
+ 			targetHole = randomHole(holes);//peep hole 
+//			console.log(targetHole);
+			//add the CSS class so selected mole can "pop up"
+			
+		    setTimeout(() => {
+//		    	console.log('----targetHole in setTimeout----');
+//		    	console.log(targetHole);
+/**
+PROMISE LAUNCHING
+*/
+				promiseA.then((newer)=>{//change hole
+					console.log(newer);
+					holes.forEach(hole => {
+//						console.log('before');
+//						console.log(targetHole);
+//						console.log(targetHole.children[0]);
+
+						hole.children[0].classList.replace(newer,'mole');
+						hole.children[0].textContent=randomWord(targetWord);
+
+//						console.log('after');
+//						console.log(targetHole);
+//						console.log(targetHole.children[0]);
+
+					});
+//					console.log('before targetHole');
+//					console.log(targetHole);
+//					console.log(targetHole.children[0]);
+
+					targetHole.children[0].classList.replace('mole',newer);
+					
+					targetHole.children[0].textContent=targetWord;
+		 			audio.play();
+					
+//					console.log('after targetHole');
+//					console.log(targetHole);
+//					console.log(targetHole.children[0]);
+				})
+				.then(()=>{//pop up
+					holes.forEach( hole => {
+//						console.log('before change');
+//						console.log(hole);
+//						console.log(hole.children[0]);
+
+						hole.classList.add('up');//the mole "pop up" 
+
+//						console.log('after change');
+//						console.log(hole);
+//						console.log(hole.children[0]);
+					})
+				})
+				.then(()=>{//pop down
+					
+					setTimeout( ()=>
+				 		holes.forEach( hole => {
+				 			hole.classList.remove('up');
+						})//pop down
+					,time)
+				});
+
+		    	
+        		if(!timeUp) {
+            		run();	//the 2nd mole peeps}
+        		};
+    		}, 2*time);
+		}
+//		)}//for set timeout
+
+		function randomTime(min, max) {
+ 			return Math.round(
+ 				Math.random() * (max - min) + min
+ 			);
+		}
+
+		function randomHole(holes){
+			const index = Math.floor(
+							Math.random() * holes.length						  );
+			return holes[index];
+		}
+		
+		function randomWord(chosenWord){
+			let index;
+			do {
+				index = Math.floor(Math.random() * words.length);
+			} while (chosenWord == words[index] )				
+			return words[index];
+		}
+		
+		function wack(e){
+	    	if(!e.isTrusted) return; 
+//	    	console.log('click');
+//	    	console.log(e.target);
+	    	let target = document.querySelector('.mole3');
+	    	if (e.target !== target) return;
+    		this.parentNode.classList.remove('up'); 
+//    		audio.currentTime = 0;
+//			audio.play();
+    		score++;
+	    	scoreBoard.textContent = score;
+		}
+
+		moles.forEach(	mole =>
+			mole.addEventListener('click', wack)
+		);
+    </script>
+</body>
+
+</html>
